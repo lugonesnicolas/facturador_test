@@ -1,7 +1,8 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextAuthOptions } from "next-auth";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -10,7 +11,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Contraseña", type: "password" },
       },
       async authorize(credentials) {
-        // Simulando una base de datos con usuario y contraseña
         const usuarioValido = {
           email: "admin@email.com",
           password: "1234",
@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
           return { id: "1", name: "Admin", email: usuarioValido.email };
         }
 
-        return null; // Retorna `null` si las credenciales son incorrectas
+        return null;
       },
     }),
   ],
@@ -36,6 +36,6 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Configurar NextAuth correctamente en Next.js 15
+// ✅ Corrección: No exportar `authOptions`, solo exportar GET y POST
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
