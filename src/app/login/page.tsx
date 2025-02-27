@@ -1,10 +1,18 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<p className="text-white">Cargando...</p>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const { status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +20,7 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Si ya está autenticado, redirigir al home
+  // Redirigir si el usuario ya está autenticado
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/");
@@ -34,19 +42,19 @@ export default function LoginPage() {
     const result = await signIn("credentials", {
       email,
       password,
-      redirect: false, // No redirigir automáticamente
+      redirect: false,
     });
 
     if (result?.error) {
       setError("Email o contraseña incorrectos");
     } else {
-      router.push("/"); // Redirige manualmente al home si es exitoso
-      router.refresh(); // Actualiza la sesión en la UI
+      router.push("/");
+      router.refresh();
     }
   };
 
   return (
-    <main className="flex w-full items-center justify-center bg-gray-900">
+    <main className="flex w-full items-center justify-center bg-gray-900 min-h-screen">
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-md w-80">
         <h1 className="text-2xl font-bold text-white mb-4">Iniciar Sesión</h1>
 
