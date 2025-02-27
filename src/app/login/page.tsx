@@ -54,7 +54,7 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex w-full items-center justify-center bg-gray-900 min-h-screen">
+    <main className="flex w-full items-center justify-center bg-gray-900 w-full">
       <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-md w-80">
         <h1 className="text-2xl font-bold text-white mb-4">Iniciar Sesión</h1>
 
